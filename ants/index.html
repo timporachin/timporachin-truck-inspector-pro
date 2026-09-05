@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#120d07">
+  <meta name="description" content="Ant Ranchers — an animated short about how ants farm aphids: carrying them off, milking them for honeydew, and fighting ladybirds to protect the herd.">
+  <title>Ant Ranchers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700;9..144,900&family=Karla:wght@400;500;600;700&display=swap">
+  <link rel="stylesheet" href="ants.css">
+  <script defer src="art.js"></script>
+  <script defer src="scene.js"></script>
+  <script defer src="player.js"></script>
+</head>
+<body>
+<div id="app">
+
+  <header class="masthead">
+    <p class="eyebrow">An educational short · 2 min</p>
+    <h1>Ant Ranchers</h1>
+    <p class="standfirst">
+      Ants really do farm aphids: they carry them off a plant, keep them underground, stroke
+      their backsides with their antennae to make them give up honeydew, and tear apart any
+      ladybird that comes for the herd. Every beat in this film is a real behaviour.
+    </p>
+    <dl class="scalebar">
+      <div><dt>Ant</dt><dd>3–5 mm</dd></div>
+      <div><dt>Aphid</dt><dd>2–3 mm</dd></div>
+      <div><dt>Ladybird</dt><dd>5–8 mm</dd></div>
+      <div><dt>Shown at</dt><dd>roughly 200×</dd></div>
+    </dl>
+  </header>
+
+  <main class="stage">
+    <div class="screen" id="screen">
+      <canvas id="film" width="1280" height="720" aria-label="Animated film: Ant Ranchers"></canvas>
+      <button type="button" id="bigPlay" class="big-play" aria-label="Play the film">
+        <span class="tri" aria-hidden="true"></span>
+      </button>
+      <p class="cc" id="cc" aria-live="polite"></p>
+    </div>
+
+    <div class="transport" role="group" aria-label="Playback controls">
+      <button type="button" id="playPause" class="tbtn primary" aria-label="Play">
+        <span class="ico play" aria-hidden="true"></span>
+      </button>
+      <button type="button" id="restart" class="tbtn" aria-label="Restart from the beginning">↺</button>
+
+      <div class="scrub" id="scrub" role="slider" tabindex="0"
+           aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="track">
+          <div class="fill" id="fill"></div>
+          <div class="ticks" id="ticks"></div>
+          <div class="knob" id="knob"></div>
+        </div>
+      </div>
+
+      <span class="time" id="time">0:00 / 0:00</span>
+
+      <button type="button" id="speed" class="tbtn wide" aria-label="Playback speed">1&times;</button>
+      <button type="button" id="narrate" class="tbtn wide" aria-pressed="false" aria-label="Read the captions aloud">Narrate</button>
+      <button type="button" id="capToggle" class="tbtn wide" aria-pressed="true" aria-label="Toggle captions">CC</button>
+      <button type="button" id="fs" class="tbtn" aria-label="Fullscreen">⛶</button>
+    </div>
+
+    <nav class="chapters" id="chapters" aria-label="Chapters"></nav>
+
+    <p class="keys">
+      <kbd>Space</kbd> play · <kbd>←</kbd><kbd>→</kbd> 5s · <kbd>,</kbd><kbd>.</kbd> frame ·
+      <kbd>F</kbd> fullscreen · <kbd>C</kbd> captions · <kbd>R</kbd> restart
+    </p>
+  </main>
+
+  <section class="notes">
+    <h2>Is any of this actually true?</h2>
+    <div class="grid">
+      <article>
+        <h3>The milking is real</h3>
+        <p>
+          Ants stroke and drum an aphid's abdomen with their antennae, and the aphid responds by
+          releasing a droplet of honeydew, which the ant drinks on the spot. Tended aphids hold
+          the droplet for the ant instead of flicking it away, and they release it faster and more
+          often than untended ones.
+        </p>
+      </article>
+      <article class="myth">
+        <p class="flag">Common mix-up</p>
+        <h3>It comes out the back</h3>
+        <p>
+          Honeydew is surplus plant sap, excreted from the anus. The two horns on an aphid's rear —
+          the cornicles — are not milk taps: they squirt a waxy alarm pheromone when the aphid is
+          attacked. Nearly every diagram that labels them as spouts has it wrong.
+        </p>
+      </article>
+      <article>
+        <h3>The kidnapping is husbandry</h3>
+        <p>
+          Ants pick aphids up in their mandibles and carry them to fresher stems, move them out of
+          bad weather, and take aphid eggs down into the nest to overwinter, putting them back out
+          on plants in spring. Some ants also farm root aphids entirely underground.
+        </p>
+      </article>
+      <article>
+        <h3>So is the violence</h3>
+        <p>
+          Ants guarding a herd attack ladybirds, lacewings and parasitic wasps: they bite at the
+          legs, spray formic acid, and will dismember ladybird larvae and eat the eggs. Aphid
+          colonies with ants on them survive predators far better than colonies without.
+        </p>
+      </article>
+    </div>
+    <p class="cast">
+      Cast: <em>Lasius niger</em>, the black garden ant · <em>Macrosiphum rosae</em>, the rose
+      aphid · <em>Coccinella septempunctata</em>, the seven-spot ladybird.
+    </p>
+  </section>
+
+  <footer class="foot">
+    <p>Drawn frame by frame in a canvas — no video file, no images, just maths. <a href="ant-aphid-farming.mp4">Download the MP4</a></p>
+  </footer>
+</div>
+</body>
+</html>

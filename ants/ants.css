@@ -1,0 +1,427 @@
+/* Ant Ranchers — player chrome. Deliberately a single dark "cinema" look, so
+   every colour is painted explicitly rather than inherited from the host. */
+
+:root {
+  color-scheme: dark;
+  --bg: #100b06;
+  --bg-soft: #1a1209;
+  --panel: #221708;
+  --panel-hi: #2e2010;
+  --line: rgba(214, 168, 96, .22);
+  --ink: #f6efdd;
+  --muted: #bda579;
+  --dim: #8c7852;
+  --honey: #f2ac2e;
+  --honey-lite: #ffd98a;
+  --leaf: #8fd05c;
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: Karla, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background:
+    radial-gradient(circle at 12% -6%, rgba(242, 172, 46, .13), transparent 34rem),
+    radial-gradient(circle at 92% 8%, rgba(143, 208, 92, .09), transparent 30rem),
+    linear-gradient(170deg, #0e0a05 0%, #150e07 46%, #0c0805 100%);
+}
+
+#app {
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 34px 20px 60px;
+}
+
+/* ------------------------------------------------------------- masthead -- */
+
+.masthead { margin-bottom: 22px; }
+
+.eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .19em;
+  text-transform: uppercase;
+  color: var(--honey);
+}
+
+.masthead h1 {
+  margin: 0 0 12px;
+  font-family: Fraunces, Charter, Georgia, "Times New Roman", serif;
+  font-variation-settings: "SOFT" 30, "WONK" 1;
+  font-weight: 900;
+  font-size: clamp(40px, 6.6vw, 68px);
+  line-height: .98;
+  letter-spacing: -.014em;
+  text-wrap: balance;
+}
+
+.standfirst {
+  max-width: 66ch;
+  margin: 0;
+  font-size: clamp(15px, 1.6vw, 17.5px);
+  line-height: 1.64;
+  color: var(--muted);
+}
+
+/* the field-guide scale strip: real sizes, so the zoom means something */
+.scalebar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 30px;
+  margin: 18px 0 0;
+  padding: 12px 0 0;
+  border-top: 1px solid var(--line);
+  max-width: 66ch;
+}
+
+.scalebar div { display: flex; gap: 8px; align-items: baseline; }
+
+.scalebar dt {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.scalebar dd {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: var(--leaf);
+}
+
+/* ---------------------------------------------------------------- stage -- */
+
+.screen {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #000;
+  box-shadow: 0 26px 70px rgba(0, 0, 0, .55);
+  aspect-ratio: 16 / 9;
+}
+
+#film {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.screen:fullscreen { border-radius: 0; border: 0; }
+.screen:fullscreen #film { object-fit: contain; }
+
+/* the poster-frame play button */
+.big-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  background: rgba(10, 6, 2, .34);
+  transition: opacity .25s ease, background .25s ease;
+}
+
+.big-play::after {
+  content: "";
+  position: absolute;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: rgba(24, 15, 5, .82);
+  border: 2px solid rgba(255, 217, 138, .8);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .5);
+}
+
+.big-play .tri {
+  position: relative;
+  z-index: 1;
+  margin-left: 8px;
+  border-style: solid;
+  border-width: 17px 0 17px 28px;
+  border-color: transparent transparent transparent var(--honey-lite);
+}
+
+.big-play[hidden] { display: none !important; }
+.big-play:hover { background: rgba(10, 6, 2, .2); }
+
+/* burned-in captions are in the video itself; this mirrors them for screen
+   readers and for anyone who wants selectable text */
+.cc {
+  position: absolute;
+  left: 50%;
+  bottom: 10px;
+  transform: translateX(-50%);
+  max-width: 74%;
+  margin: 0;
+  padding: 0;
+  font-size: 1px;
+  line-height: 0;
+  color: transparent;
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------ transport -- */
+
+.transport {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, var(--panel-hi), var(--panel));
+}
+
+.tbtn {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #2a1c0c;
+  color: var(--ink);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background .16s ease, border-color .16s ease, color .16s ease;
+}
+
+.tbtn.wide { width: auto; padding: 0 13px; font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+.tbtn:hover { background: #3a2711; border-color: rgba(242, 172, 46, .5); }
+.tbtn:focus-visible, .scrub:focus-visible { outline: 2px solid var(--honey); outline-offset: 2px; }
+
+.tbtn.primary { background: var(--honey); border-color: var(--honey); color: #23170a; }
+.tbtn.primary:hover { background: var(--honey-lite); }
+
+.tbtn[aria-pressed="true"] { background: #4a3413; border-color: rgba(242, 172, 46, .7); color: var(--honey-lite); }
+
+/* play / pause glyphs */
+.ico { display: block; }
+.ico.play {
+  width: 0; height: 0; margin-left: 3px;
+  border-style: solid;
+  border-width: 8px 0 8px 13px;
+  border-color: transparent transparent transparent currentColor;
+}
+.ico.pause {
+  width: 12px; height: 16px;
+  border-left: 4px solid currentColor;
+  border-right: 4px solid currentColor;
+}
+
+.scrub { flex: 1 1 auto; padding: 12px 4px; cursor: pointer; }
+
+.track {
+  position: relative;
+  height: 7px;
+  border-radius: 4px;
+  background: #3a2711;
+}
+
+.fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #c9821c, var(--honey));
+}
+
+.ticks { position: absolute; inset: 0; pointer-events: none; }
+
+.ticks i {
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 13px;
+  border-radius: 1px;
+  background: rgba(255, 233, 190, .38);
+}
+
+.knob {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 15px;
+  height: 15px;
+  margin: -7.5px 0 0 -7.5px;
+  border-radius: 50%;
+  background: var(--honey-lite);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .6);
+}
+
+.time {
+  flex: 0 0 auto;
+  min-width: 108px;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ------------------------------------------------------------- chapters -- */
+
+.chapters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.chapters button {
+  padding: 8px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #1d1409;
+  color: var(--muted);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background .16s ease, color .16s ease, border-color .16s ease;
+}
+
+.chapters button:hover { background: #2b1d0d; color: var(--ink); }
+
+.chapters button[aria-current="true"] {
+  background: #4a3413;
+  border-color: rgba(242, 172, 46, .65);
+  color: var(--honey-lite);
+  font-weight: 600;
+}
+
+.chapters button b { font-weight: 700; }
+.chapters button span { opacity: .6; font-variant-numeric: tabular-nums; }
+
+.keys {
+  margin: 14px 0 0;
+  font-size: 12.5px;
+  color: var(--dim);
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: #241809;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ---------------------------------------------------------------- notes -- */
+
+.notes {
+  margin-top: 46px;
+  padding-top: 30px;
+  border-top: 1px solid var(--line);
+}
+
+.notes h2 {
+  margin: 0 0 20px;
+  font-family: Fraunces, Charter, Georgia, serif;
+  font-variation-settings: "SOFT" 30, "WONK" 1;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: -.01em;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(258px, 1fr));
+}
+
+.grid article {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: rgba(34, 23, 8, .55);
+}
+
+/* the myth-buster is the one claim readers most often have backwards */
+.grid article.myth {
+  border-color: rgba(242, 172, 46, .5);
+  background: rgba(52, 34, 9, .7);
+}
+
+.flag {
+  margin: 0;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--honey);
+}
+
+.grid h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--honey-lite);
+}
+
+.grid p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.64;
+  color: var(--muted);
+}
+
+.cast {
+  margin: 20px 0 0;
+  font-size: 13.5px;
+  color: var(--dim);
+}
+
+.foot {
+  margin-top: 34px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  color: var(--dim);
+}
+
+.foot a { color: var(--honey); }
+
+/* ----------------------------------------------------------- responsive -- */
+
+@media (max-width: 720px) {
+  #app { padding: 22px 14px 44px; }
+  .transport { flex-wrap: wrap; }
+  .scrub { order: -1; flex-basis: 100%; }
+  .time { min-width: 92px; }
+  .big-play::after { width: 68px; height: 68px; }
+  .big-play .tri { border-width: 13px 0 13px 21px; }
+}
+
+/* the offline video renderer loads this page with ?render=1 */
+body.render { background: #000; }
+body.render #app { max-width: none; margin: 0; padding: 0; }
+body.render .masthead,
+body.render .transport,
+body.render .chapters,
+body.render .keys,
+body.render .notes,
+body.render .foot,
+body.render .big-play,
+body.render .cc { display: none !important; }
+body.render .screen { border: 0; border-radius: 0; box-shadow: none; aspect-ratio: auto; }
+body.render #film { width: 1280px; height: 720px; }
