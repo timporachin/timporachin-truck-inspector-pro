@@ -875,7 +875,7 @@
     $('confFill').style.width = Math.round(h.confidence * 100) + '%';
     $('confText').textContent = h.missing.length
       ? Math.round(h.confidence * 100) + '% confidence · no data for ' + h.missing.join(', ').toLowerCase()
-      : Math.round(h.confidence * 100) + '% confidence · every factor has live data';
+      : Math.round(h.confidence * 100) + '% confidence · every factor has data';
 
     $('readLine').innerHTML = readSentence(h);
 
