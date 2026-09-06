@@ -18,7 +18,7 @@
 <div id="app">
 
   <header class="masthead">
-    <p class="eyebrow">An educational short · 2 min</p>
+    <p class="eyebrow">An educational short · 2 min 18 · narrated</p>
     <h1>Ant Ranchers</h1>
     <p class="standfirst">
       Ants really do farm aphids: they carry them off a plant, keep them underground, stroke
@@ -40,6 +40,7 @@
         <span class="tri" aria-hidden="true"></span>
       </button>
       <p class="cc" id="cc" aria-live="polite"></p>
+      <audio id="narration" src="narration.mp3" preload="metadata"></audio>
     </div>
 
     <div class="transport" role="group" aria-label="Playback controls">
@@ -60,7 +61,7 @@
       <span class="time" id="time">0:00 / 0:00</span>
 
       <button type="button" id="speed" class="tbtn wide" aria-label="Playback speed">1&times;</button>
-      <button type="button" id="narrate" class="tbtn wide" aria-pressed="false" aria-label="Read the captions aloud">Narrate</button>
+      <button type="button" id="narrate" class="tbtn wide" aria-pressed="false" aria-label="Play the spoken narration">Narrate</button>
       <button type="button" id="capToggle" class="tbtn wide" aria-pressed="true" aria-label="Toggle captions">CC</button>
       <button type="button" id="fs" class="tbtn" aria-label="Fullscreen">⛶</button>
     </div>

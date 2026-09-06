@@ -46,6 +46,18 @@ body = body.replace(
   '<p>Drawn frame by frame in a canvas — no video file, no images, just maths.</p>'
 );
 
+/* The narration has to travel inside the file too, or the Narrate button on a
+   shared copy would point at a track that isn't there. */
+const audioPath = path.join(REPO, 'ants/narration.mp3');
+const audio = await readFile(audioPath);
+body = body.replace(
+  /src="narration\.mp3"/,
+  'src="data:audio/mpeg;base64,' + audio.toString('base64') + '"'
+);
+if (body.includes('narration.mp3')) {
+  throw new Error('the narration audio was not inlined');
+}
+
 if (/<script|href="ants\.css"/.test(body)) {
   throw new Error('unexpected script or stylesheet reference left in the body');
 }
@@ -65,5 +77,5 @@ await writeFile(OUT, out);
 
 console.log(`wrote ${path.relative(REPO, OUT)}  (${(out.length / 1024).toFixed(0)} KB)`);
 console.log(`  title:   ${title}`);
-console.log(`  inlined: ants.css + art.js + scene.js + player.js`);
+console.log(`  inlined: ants.css + art.js + scene.js + player.js + narration.mp3`);
 console.log(`  linked:  ${fontLinks.length} font stylesheet reference(s)`);

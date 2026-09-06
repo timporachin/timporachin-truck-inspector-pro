@@ -1,2 +1,6 @@
 # derived from ants/ by tools/build-artifact.mjs
 build/
+
+# Piper voice models, fetched on demand by tools/build-narration.mjs (~110 MB)
+tools/voices/
+tools/.narration-work/

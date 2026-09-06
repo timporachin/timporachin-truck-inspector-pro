@@ -58,6 +58,8 @@ const END = arg('end') == null ? null : Number(arg('end'));
    twice as fast and good enough for checking timing on a preview render. */
 const JPEG = flag('jpeg');
 const JPEG_Q = Number(arg('quality', 0.95));
+/* an audio track to lay under the picture; build one with build-narration.mjs */
+const AUDIO = arg('audio') == null ? null : path.resolve(REPO, arg('audio'));
 
 if (!Number.isFinite(FPS) || FPS <= 0) throw new Error('--fps must be a positive number');
 if (!Number.isFinite(SCALE) || SCALE < 1 || SCALE > 4) throw new Error('--scale must be 1-4');
@@ -158,15 +160,24 @@ try {
 
   await mkdir(path.dirname(OUT), { recursive: true });
 
+  if (AUDIO && !existsSync(AUDIO)) {
+    throw new Error('no audio file at ' + AUDIO + ' — build one with tools/build-narration.mjs');
+  }
+  if (AUDIO) console.log('· audio:      ' + AUDIO);
+
   ffProc = spawn(ffmpeg, [
     '-y',
     '-f', 'image2pipe',
     '-framerate', String(FPS),
     '-i', '-',
+    ...(AUDIO ? ['-i', AUDIO] : []),
     '-c:v', 'libx264',
     '-preset', PRESET,
     '-crf', String(CRF),
     '-pix_fmt', 'yuv420p',
+    /* the narration bed is cut to the film's length, so let the picture end
+       the file rather than trusting the audio's exact duration */
+    ...(AUDIO ? ['-c:a', 'aac', '-b:a', '128k', '-map', '0:v:0', '-map', '1:a:0', '-shortest'] : []),
     '-movflags', '+faststart',
     OUT
   ], { stdio: ['pipe', 'ignore', 'pipe'] });

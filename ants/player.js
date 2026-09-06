@@ -47,7 +47,8 @@
     capToggle: document.getElementById('capToggle'),
     fs: document.getElementById('fs'),
     chapters: document.getElementById('chapters'),
-    cc: document.getElementById('cc')
+    cc: document.getElementById('cc'),
+    narration: document.getElementById('narration')
   };
 
   var t = 0;
@@ -56,18 +57,22 @@
   var captionsOn = true;
   var narrating = false;
   var lastFrameTime = 0;
-  var spokenCaption = null;
   var activeChapter = -1;
 
   var RATES = [1, 1.5, 0.5];
   var rateIndex = 0;
 
-  var canSpeak = 'speechSynthesis' in window &&
-    typeof window.SpeechSynthesisUtterance === 'function';
-  if (!canSpeak) {
+  /* The narration is a recorded track built from the same caption list the
+     film paints, so the voice and the words on screen cannot drift apart.
+     If it fails to load, the button says so rather than silently doing nothing. */
+  var narrationBroken = false;
+  el.narration.addEventListener('error', function () {
+    narrationBroken = true;
+    narrating = false;
     el.narrate.disabled = true;
-    el.narrate.title = 'This browser has no speech synthesis';
-  }
+    el.narrate.setAttribute('aria-pressed', 'false');
+    el.narrate.title = 'narration.mp3 could not be loaded';
+  });
 
   var reduceMotion = window.matchMedia &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -114,6 +119,7 @@
       }
       draw();
       syncUi();
+      syncNarration(false);
     }
     requestAnimationFrame(tick);
   }
@@ -125,14 +131,13 @@
     el.bigPlay.hidden = playing || t > 0.02;
     el.playPause.setAttribute('aria-label', playing ? 'Pause' : 'Play');
     el.playPause.firstElementChild.className = 'ico ' + (playing ? 'pause' : 'play');
-    if (!playing) stopSpeaking();
+    if (playing) syncNarration(true); else stopNarration();
   }
 
   function seek(next, keepPlaying) {
     t = Math.max(0, Math.min(film.duration, next));
-    stopSpeaking();
-    spokenCaption = null;
     if (!keepPlaying) lastFrameTime = 0;
+    syncNarration(true);
     el.bigPlay.hidden = playing || t > 0.02;
     draw();
     syncUi();
@@ -140,17 +145,29 @@
 
   /* --------------------------------------------------------- narration -- */
 
-  function stopSpeaking() {
-    if (canSpeak) window.speechSynthesis.cancel();
+  /* The film's clock stays the master; the audio element is kept alongside it
+     and only corrected when it drifts audibly. */
+  var DRIFT = 0.28;
+
+  function syncNarration(force) {
+    if (narrationBroken) return;
+    var audio = el.narration;
+    if (!narrating || !playing) {
+      if (!audio.paused) audio.pause();
+      return;
+    }
+    if (audio.playbackRate !== rate) audio.playbackRate = rate;
+    if (force || Math.abs(audio.currentTime - t) > DRIFT) {
+      try { audio.currentTime = t; } catch (e) { /* not seekable yet */ }
+    }
+    if (audio.paused) {
+      var p = audio.play();
+      if (p && p.catch) p.catch(function () { /* autoplay policy; the toggle retries */ });
+    }
   }
 
-  function speak(text) {
-    if (!canSpeak) return;
-    var u = new SpeechSynthesisUtterance(text);
-    u.rate = 0.98;
-    u.pitch = 1;
-    u.volume = 1;
-    window.speechSynthesis.speak(u);
+  function stopNarration() {
+    if (!narrationBroken && !el.narration.paused) el.narration.pause();
   }
 
   /* ------------------------------------------------------------- chrome -- */
@@ -171,13 +188,6 @@
     var cap = film.captionAt(t);
     var capText = cap ? cap.text : '';
     if (el.cc.textContent !== capText) el.cc.textContent = capText;
-
-    /* narrate each caption once, as it becomes active */
-    if (narrating && playing && cap && spokenCaption !== cap) {
-      spokenCaption = cap;
-      speak(cap.text);
-    }
-    if (!cap) spokenCaption = null;
 
     var sc = film.sceneAt(t);
     if (sc.index !== activeChapter) {
@@ -213,13 +223,14 @@
     rateIndex = (rateIndex + 1) % RATES.length;
     rate = RATES[rateIndex];
     el.speed.innerHTML = rate + '&times;';
+    syncNarration(false);
   });
 
   el.narrate.addEventListener('click', function () {
+    if (narrationBroken) return;
     narrating = !narrating;
     el.narrate.setAttribute('aria-pressed', String(narrating));
-    spokenCaption = null;
-    if (!narrating) stopSpeaking();
+    if (narrating) syncNarration(true); else stopNarration();
   });
 
   el.capToggle.addEventListener('click', function () {

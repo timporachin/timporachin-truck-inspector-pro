@@ -352,7 +352,7 @@
 
     /* the worker climbs the stem, inspects, lifts an aphid, carries it away */
     var climb = ease(seg(lt, 0.2, 3.4));
-    var back = ease(seg(lt, 10.2, 16.8));
+    var back = ease(seg(lt, 10.2, 18.4));
     var antU = back > 0 ? lerp(TAKE_U, 0.04, back) : lerp(0.06, TAKE_U, climb);
 
     var lift = ease(seg(lt, 6.4, 7.8));   /* the aphid leaves the stem */
@@ -571,7 +571,7 @@
   function sceneParlour(ctx, u, lt, t) {
     /* the shot pushes from the wide chamber into a big two-shot, then pulls out */
     var zi = ease(seg(lt, 4.4, 7.2));
-    var zo = ease(seg(lt, 19.6, 21.8));
+    var zo = ease(seg(lt, 23.4, 25.6));
     var cam = {
       x: lerp(lerp(640, 656, zi), 640, zo),
       y: lerp(lerp(424, 470, zi), 424, zo),
@@ -666,9 +666,9 @@
 
       /* --- the hero pair, centre stage --- */
       var hx = PARLOUR.heroX, hy = PARLOUR.rootY - 14;
-      var drumming = lt > 7.0 && lt < 15.2;
-      var swell = seg(lt, 9.0, 13.8);
-      var sip = seg(lt, 15.2, 17.6);
+      var drumming = lt > 7.0 && lt < 17.4;
+      var swell = seg(lt, 9.0, 15.6);
+      var sip = seg(lt, 17.4, 19.8);
       var dropR = lerp(0, 13, swell) * (1 - easeIn(sip));
 
       /* The aphid is drawn without its bead, the ant next, then the bead on
@@ -709,7 +709,7 @@
     });
 
     var aDrop = w2s(cam, PARLOUR.heroX - 36, PARLOUR.rootY - 31);
-    var c2 = ease(seg(lt, 13.8, 14.6)) * (1 - ease(seg(lt, 18.2, 18.9)));
+    var c2 = ease(seg(lt, 15.6, 16.4)) * (1 - ease(seg(lt, 21.0, 21.7)));
     A.drawCallout(ctx, {
       x: aDrop.x, y: aDrop.y, tx: 1060, ty: 200, side: 'right', alpha: c2, maxWidth: 205,
       title: 'Honeydew, on demand', sub: 'Released from the anus. The ant drinks it before it can ever hit the ground.'
@@ -761,7 +761,7 @@
       }
 
       /* guards come up the stem */
-      var alert = ease(seg(lt, 7.4, 11.0));
+      var alert = ease(seg(lt, 7.4, 14.6));
       for (var k = 0; k < 2; k++) {
         var gp = onStem(lerp(0.06 + k * 0.05, 0.42 + k * 0.06, alert), -2);
         A.drawAnt(ctx, {
@@ -957,7 +957,7 @@
     /* species credits, sitting between the cards and the two parties */
     var credIn = ease(seg(lt, 8.4, 9.4));
     ctx.save();
-    ctx.globalAlpha = credIn * (1 - ease(seg(lt, 12.8, 13.8)));
+    ctx.globalAlpha = credIn * (1 - ease(seg(lt, 15.8, 16.8)));
     A.text(ctx, 'Lasius niger   ·   Macrosiphum rosae   ·   Coccinella septempunctata', W / 2, 412, {
       size: 19, weight: 500, align: 'center', color: '#8a6a3a'
     });
@@ -982,13 +982,13 @@
 
   var SCENES = [
     { id: 'title', title: 'Ant Ranchers', dur: 9, paint: sceneTitle },
-    { id: 'herd', title: 'The herd', dur: 15, paint: sceneHerd },
-    { id: 'roundup', title: 'The roundup', dur: 17, paint: sceneRoundup, cutIn: true },
+    { id: 'herd', title: 'The herd', dur: 15.5, paint: sceneHerd },
+    { id: 'roundup', title: 'The roundup', dur: 19, paint: sceneRoundup, cutIn: true },
     { id: 'march', title: 'The march home', dur: 14, paint: sceneMarch },
-    { id: 'parlour', title: 'The milking parlour', dur: 23, paint: sceneParlour },
-    { id: 'raid', title: 'The raid', dur: 14, paint: sceneRaid },
-    { id: 'defence', title: 'The defence', dur: 18, paint: sceneDefence, cutIn: true },
-    { id: 'deal', title: 'The deal', dur: 14, paint: sceneDeal }
+    { id: 'parlour', title: 'The milking parlour', dur: 27, paint: sceneParlour },
+    { id: 'raid', title: 'The raid', dur: 17.5, paint: sceneRaid },
+    { id: 'defence', title: 'The defence', dur: 19, paint: sceneDefence, cutIn: true },
+    { id: 'deal', title: 'The deal', dur: 17, paint: sceneDeal }
   ];
 
   var start = 0;
@@ -1001,37 +1001,37 @@
 
   /* caption track, in scene-local seconds: [sceneId, at, dur, text] */
   var CAPTION_SRC = [
-    ['herd', 0.4, 4.2, 'This is an aphid. It spends its whole life with a straw in a plant, drinking sugar.'],
-    ['herd', 5.0, 4.4, 'Far more sugar goes in than it needs — so the surplus drips out the back as honeydew.'],
-    ['herd', 9.8, 4.8, 'Which is why ants do not eat aphids. Ants keep them.'],
+    ['herd', 0.4, 5.7, 'This is an aphid. It spends its whole life with a straw in a plant, drinking sugar.'],
+    ['herd', 6.0, 5.1, 'Far more sugar goes in than it needs — so the surplus drips out the back as honeydew.'],
+    ['herd', 11.0, 3.8, 'Which is why ants do not eat aphids. Ants keep them.'],
 
-    ['roundup', 0.4, 3.4, 'A worker climbs up, taps the herd with her antennae, and chooses one.'],
-    ['roundup', 4.2, 4.4, 'The aphid does not struggle. Being carried off by an ant is safer than staying put.'],
-    ['roundup', 9.2, 4.6, 'This is real husbandry: ants move their aphids to fresher stems all season.'],
-    ['roundup', 14.2, 2.6, 'And in autumn, they carry the eggs down into the nest.'],
+    ['roundup', 0.4, 4.6, 'A worker climbs up, taps the herd with her antennae, and chooses one.'],
+    ['roundup', 4.9, 5.3, 'The aphid does not struggle. Being carried off by an ant is safer than staying put.'],
+    ['roundup', 10.1, 4.3, 'This is real husbandry: ants move their aphids to fresher stems all season.'],
+    ['roundup', 14.3, 3.7, 'And in autumn, they carry the eggs down into the nest.'],
 
-    ['march', 0.4, 4.2, 'The road home is chemical — a scent trail, topped up by every ant that uses it.'],
-    ['march', 5.2, 4.4, 'Livestock in the mandibles, the column heads underground.'],
-    ['march', 10.2, 3.4, 'Welcome to the dairy.'],
+    ['march', 0.4, 5.6, 'The road home is chemical — a scent trail, topped up by every ant that uses it.'],
+    ['march', 5.9, 4.2, 'Livestock in the mandibles, the column heads underground.'],
+    ['march', 10.2, 1.7, 'Welcome to the dairy.'],
 
-    ['parlour', 0.4, 4.0, 'Down here the herd is warm, hidden from predators, and permanently on tap.'],
-    ['parlour', 5.2, 3.4, 'To get milk, the ant strokes the aphid’s abdomen with her antennae.'],
-    ['parlour', 9.0, 4.4, 'Yes. She is, accurately and scientifically, tickling its bum.'],
-    ['parlour', 13.8, 4.4, 'The aphid answers with a bead of honeydew, and the ant drinks it straight from the tap.'],
-    ['parlour', 18.6, 3.8, 'Not from the horns, by the way. Those are alarm sirens. This comes out the back.'],
+    ['parlour', 0.4, 5.1, 'Down here the herd is warm, hidden from predators, and permanently on tap.'],
+    ['parlour', 5.4, 4.2, 'To get milk, the ant strokes the aphid’s abdomen with her antennae.'],
+    ['parlour', 9.6, 5.2, 'Yes. She is, accurately and scientifically, tickling its bum.'],
+    ['parlour', 14.6, 5.4, 'The aphid answers with a bead of honeydew, and the ant drinks it straight from the tap.'],
+    ['parlour', 20.0, 6.0, 'Not from the horns, by the way. Those are alarm sirens. This comes out the back.'],
 
-    ['raid', 0.4, 3.6, 'And then the cattle raid arrives.'],
-    ['raid', 4.4, 4.6, 'A seven-spot ladybird eats about fifty aphids a day. To an ant, that is the herd, the milk and the winter — gone.'],
-    ['raid', 9.6, 3.8, 'An aphid fires its alarm horns. The guards come running.'],
+    ['raid', 0.4, 2.3, 'And then the cattle raid arrives.'],
+    ['raid', 4.4, 7.9, 'A seven-spot ladybird eats about fifty aphids a day. To an ant, that is the herd, the milk and the winter — gone.'],
+    ['raid', 12.2, 4.5, 'An aphid fires its alarm horns. The guards come running.'],
 
-    ['defence', 0.4, 3.4, 'Ants defend a herd the way a farmer defends a field.'],
-    ['defence', 4.2, 4.4, 'They swarm it, bite the legs, spray formic acid, and flip the beetle onto its back.'],
-    ['defence', 9.2, 4.6, 'This part is not cartoon licence: ants really do pull ladybirds apart to protect their aphids.'],
-    ['defence', 14.4, 3.2, 'The herd goes back to grazing.'],
+    ['defence', 0.4, 3.5, 'Ants defend a herd the way a farmer defends a field.'],
+    ['defence', 4.2, 5.9, 'They swarm it, bite the legs, spray formic acid, and flip the beetle onto its back.'],
+    ['defence', 10.0, 5.9, 'This part is not cartoon licence: ants really do pull ladybirds apart to protect their aphids.'],
+    ['defence', 15.8, 2.4, 'The herd goes back to grazing.'],
 
-    ['deal', 0.4, 3.6, 'So it is not really kidnapping. It is a contract.'],
-    ['deal', 4.4, 4.4, 'The aphid pays in sugar. The ant pays in bodyguards, transport and winter housing.'],
-    ['deal', 9.4, 4.0, 'Ants have farmed like this for tens of millions of years. We have managed twelve thousand.']
+    ['deal', 0.4, 3.5, 'So it is not really kidnapping. It is a contract.'],
+    ['deal', 4.4, 6.2, 'The aphid pays in sugar. The ant pays in bodyguards, transport and winter housing.'],
+    ['deal', 10.5, 5.7, 'Ants have farmed like this for tens of millions of years. We have managed twelve thousand.'],
   ];
 
   var CAPTIONS = CAPTION_SRC.map(function (c) {
