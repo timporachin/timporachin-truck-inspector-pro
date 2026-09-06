@@ -189,6 +189,22 @@ h1 {
   gap: 10px;
 }
 
+/* Link across to the second app on this site. */
+.hero-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 11px 16px;
+  color: var(--cyan);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border: 1px solid var(--line-hi);
+  border-radius: 12px;
+  background: var(--cyan-soft);
+  white-space: nowrap;
+}
+.hero-link:hover { color: var(--ink); border-color: var(--cyan); }
+
 main {
   max-width: 1180px;
   margin: 0 auto;
@@ -739,6 +755,7 @@ button:disabled {
   h1 { font-size: clamp(38px, 12vw, 58px); }
 
   .hero-buttons { display: grid; grid-template-columns: 1fr 1fr; }
+  .hero-link { grid-column: 1 / -1; justify-content: center; }
 
   main { padding: 0 10px; }
 
