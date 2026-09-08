@@ -1001,37 +1001,37 @@
 
   /* caption track, in scene-local seconds: [sceneId, at, dur, text] */
   var CAPTION_SRC = [
-    ['herd', 0.4, 5.7, 'This is an aphid. It spends its whole life with a straw in a plant, drinking sugar.'],
-    ['herd', 6.0, 5.1, 'Far more sugar goes in than it needs — so the surplus drips out the back as honeydew.'],
-    ['herd', 11.0, 3.8, 'Which is why ants do not eat aphids. Ants keep them.'],
+    ['herd', 0.4, 4.2, 'This is an aphid. It spends its whole life with a straw in a plant.'],
+    ['herd', 6.0, 4.9, 'More sugar goes in than it can use. The surplus drips out the back — honeydew.'],
+    ['herd', 11.0, 3.6, 'Which is why ants do not eat aphids. Ants keep them.'],
 
-    ['roundup', 0.4, 4.6, 'A worker climbs up, taps the herd with her antennae, and chooses one.'],
-    ['roundup', 4.9, 5.3, 'The aphid does not struggle. Being carried off by an ant is safer than staying put.'],
-    ['roundup', 10.1, 4.3, 'This is real husbandry: ants move their aphids to fresher stems all season.'],
-    ['roundup', 14.3, 3.7, 'And in autumn, they carry the eggs down into the nest.'],
+    ['roundup', 0.4, 4.7, 'A worker climbs up, taps the herd with her antennae, and chooses one.'],
+    ['roundup', 5.0, 4.5, 'The aphid does not struggle. Being carried off is safer than staying put.'],
+    ['roundup', 10.1, 4.1, 'This is real husbandry: ants move their aphids to fresher stems all season.'],
+    ['roundup', 14.3, 3.3, 'And in autumn, they carry the eggs down into the nest.'],
 
-    ['march', 0.4, 5.6, 'The road home is chemical — a scent trail, topped up by every ant that uses it.'],
-    ['march', 5.9, 4.2, 'Livestock in the mandibles, the column heads underground.'],
+    ['march', 0.4, 4.1, 'The road home is a scent trail, topped up by every ant that walks it.'],
+    ['march', 5.9, 3.8, 'Livestock in the mandibles, the column heads underground.'],
     ['march', 10.2, 1.7, 'Welcome to the dairy.'],
 
-    ['parlour', 0.4, 5.1, 'Down here the herd is warm, hidden from predators, and permanently on tap.'],
+    ['parlour', 0.4, 4.8, 'Down here the herd is warm, hidden from predators, and permanently on tap.'],
     ['parlour', 5.4, 4.2, 'To get milk, the ant strokes the aphid’s abdomen with her antennae.'],
-    ['parlour', 9.6, 5.2, 'Yes. She is, accurately and scientifically, tickling its bum.'],
-    ['parlour', 14.6, 5.4, 'The aphid answers with a bead of honeydew, and the ant drinks it straight from the tap.'],
-    ['parlour', 20.0, 6.0, 'Not from the horns, by the way. Those are alarm sirens. This comes out the back.'],
+    ['parlour', 9.6, 5.0, 'Yes. She is, accurately and scientifically, tickling its bum.'],
+    ['parlour', 14.6, 4.5, 'The aphid answers with a bead of honeydew, and the ant drinks it on the spot.'],
+    ['parlour', 20.0, 4.8, 'Not from the horns. Those are alarm sirens. It comes out the back.'],
 
     ['raid', 0.4, 2.3, 'And then the cattle raid arrives.'],
-    ['raid', 4.4, 7.9, 'A seven-spot ladybird eats about fifty aphids a day. To an ant, that is the herd, the milk and the winter — gone.'],
-    ['raid', 12.2, 4.5, 'An aphid fires its alarm horns. The guards come running.'],
+    ['raid', 4.4, 5.7, 'A ladybird eats fifty aphids a day. That is the herd, the milk, and the winter — gone.'],
+    ['raid', 12.2, 4.1, 'An aphid fires its alarm horns. The guards come running.'],
 
-    ['defence', 0.4, 3.5, 'Ants defend a herd the way a farmer defends a field.'],
-    ['defence', 4.2, 5.9, 'They swarm it, bite the legs, spray formic acid, and flip the beetle onto its back.'],
-    ['defence', 10.0, 5.9, 'This part is not cartoon licence: ants really do pull ladybirds apart to protect their aphids.'],
-    ['defence', 15.8, 2.4, 'The herd goes back to grazing.'],
+    ['defence', 0.4, 3.1, 'Ants defend a herd the way a farmer defends a field.'],
+    ['defence', 4.2, 3.6, 'They swarm it, bite its legs, and flip it onto its back.'],
+    ['defence', 10.0, 4.5, 'This is not cartoon licence. Ants really do pull ladybirds apart.'],
+    ['defence', 15.8, 2.2, 'The herd goes back to grazing.'],
 
-    ['deal', 0.4, 3.5, 'So it is not really kidnapping. It is a contract.'],
-    ['deal', 4.4, 6.2, 'The aphid pays in sugar. The ant pays in bodyguards, transport and winter housing.'],
-    ['deal', 10.5, 5.7, 'Ants have farmed like this for tens of millions of years. We have managed twelve thousand.'],
+    ['deal', 0.4, 3.3, 'So it is not really kidnapping. It is a contract.'],
+    ['deal', 4.4, 4.8, 'The aphid pays in sugar. The ant pays in bodyguards and transport.'],
+    ['deal', 10.5, 4.7, 'Ants have farmed for tens of millions of years. We have managed twelve thousand.'],
   ];
 
   var CAPTIONS = CAPTION_SRC.map(function (c) {
