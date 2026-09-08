@@ -401,6 +401,8 @@ kbd {
 
 .foot a { color: var(--honey); }
 
+.foot .grab { margin: 8px 0 0; }
+
 /* ----------------------------------------------------------- responsive -- */
 
 @media (max-width: 720px) {

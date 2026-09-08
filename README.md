@@ -38,11 +38,20 @@ underground, stroking their abdomens with their antennae to draw honeydew, and t
 the legs off ladybirds that come for the herd. Every behaviour in it is real; the page
 under the player says which bits are which.
 
-- **Watch it:** open `ants/` (on GitHub Pages, `/ants/`). Play, pause, scrub, jump by
-  chapter, or switch on **Narrate** for the spoken commentary.
-- **The video file:** `ants/ant-aphid-farming.mp4` — 2:18, 1280×720, 30 fps, H.264 with an
-  AAC narration track, about 13 MB. It has sound; the captions are burned in as well, so it
-  still reads with the volume off.
+It comes in three forms, so anyone can open it without an account, an install, or a
+GitHub login:
+
+| | What it is | When to use it |
+| --- | --- | --- |
+| `ants/ant-ranchers.html` | The whole player — film, narration and all — as **one file**, 1.4 MB | Email it, put it on a USB stick, double-click it. Works offline in any browser. |
+| `ants/ant-aphid-farming.mp4` | 2:18, 1280×720, 30 fps, H.264 + AAC, 13 MB | Best quality. Uploading, presenting, keeping. |
+| `ants/ant-aphid-farming-small.mp4` | The same film at a lower bitrate, 5 MB | Anywhere with an attachment limit. Looks the same on a phone or laptop. |
+
+Or open `ants/` as a normal web page (on GitHub Pages, `/ants/`): play, pause, scrub, jump
+by chapter, and switch on **Narrate** for the spoken commentary.
+
+Both videos have sound, and the captions are burned into the picture as well, so the film
+still reads with the volume off.
 
 Nothing here touches the inspection app. It is its own folder with its own stylesheet,
 and the app's `index.html`, `styles.css`, `js/` and `assets/` are untouched.
@@ -60,6 +69,7 @@ offline renderer produce byte-identical frames for the same timestamp.
 | `ants/scene.js` | The film — eight scenes, the camera, the caption track, `drawFrame` |
 | `ants/player.js` | The player: clock, transport, chapters, narration, `?render=1` mode |
 | `ants/index.html`, `ants/ants.css` | The page |
+| `tools/build-artifact.mjs` | Flattens the page into the one-file version |
 | `ants/narration.mp3` | The spoken commentary, one clip per caption on a single bed |
 | `tools/render-video.mjs` | Walks the timeline in headless Chromium and encodes the MP4 |
 | `tools/build-narration.mjs` | Speaks the caption track with Piper and lays out the audio |
@@ -71,6 +81,10 @@ node tools/build-narration.mjs                           # ants/narration.mp3
 node tools/render-video.mjs --audio ants/narration.mp3   # the whole film, with sound
 node tools/render-video.mjs --start 57 --end 84 --jpeg   # one scene, quick preview
 node tools/render-video.mjs --scale 2 --out ants/1440p.mp4
+
+node tools/render-video.mjs --audio ants/narration.mp3 \
+  --crf 30 --preset slow --out ants/ant-aphid-farming-small.mp4   # the email-sized one
+node tools/build-artifact.mjs --standalone                        # the one-file version
 ```
 
 Needs Playwright with Chromium, and an ffmpeg built with libx264. If there is no ffmpeg

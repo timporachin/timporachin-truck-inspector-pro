@@ -1,14 +1,19 @@
 #!/usr/bin/env node
 /*
- * Flatten ants/index.html into one self-contained HTML file, for publishing
- * somewhere that takes a single file (a Claude Artifact, a gist, an email).
+ * Flatten ants/index.html into one self-contained HTML file: the player, the
+ * film and the narration in a single document that needs no server.
  *
- *   node tools/build-artifact.mjs [--out build/ant-ranchers.html]
+ *   node tools/build-artifact.mjs               # build/ant-ranchers.html
+ *   node tools/build-artifact.mjs --standalone  # ants/ant-ranchers.html
  *
- * The output is a document fragment, not a full page: no doctype, <html>,
- * <head> or <body>, because the artifact host supplies those. Everything the
- * page needs is inlined except the Google Fonts stylesheet, which stays as a
- * link — that host is on the artifact content-security policy allowlist.
+ * By default the output is a document fragment — no doctype, <html>, <head> or
+ * <body> — because an artifact host supplies those. --standalone wraps it in
+ * the full scaffolding instead, so the file opens by double-clicking it.
+ *
+ * Either way everything is inlined, including the narration audio, so the file
+ * works with no network. The Google Fonts stylesheet is the one exception and
+ * the only link left: it is an enhancement, and the page falls back to Charter
+ * and the system sans without it.
  */
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -17,7 +22,11 @@ import { fileURLToPath } from 'node:url';
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const argv = process.argv.slice(2);
 const outArg = argv.indexOf('--out');
-const OUT = path.resolve(REPO, outArg === -1 ? 'build/ant-ranchers.html' : argv[outArg + 1]);
+/* --standalone emits a complete document that opens by double-clicking;
+   without it the output is a fragment, which is what the artifact host wants. */
+const STANDALONE = argv.includes('--standalone');
+const OUT = path.resolve(REPO, outArg !== -1 ? argv[outArg + 1]
+  : STANDALONE ? 'ants/ant-ranchers.html' : 'build/ant-ranchers.html');
 
 const read = (p) => readFile(path.join(REPO, p), 'utf8');
 
@@ -41,10 +50,10 @@ const fontLinks = html.match(/<link rel="preconnect"[^>]*>|<link rel="stylesheet
 let body = slice(html, '<body>', '</body>', '<body>').trim();
 
 /* the MP4 ships with the repo, not with a single-file build */
-body = body.replace(
-  /<p>Drawn frame by frame[\s\S]*?<\/p>/,
-  '<p>Drawn frame by frame in a canvas — no video file, no images, just maths.</p>'
-);
+body = body.replace(/<p class="grab">[\s\S]*?<\/p>/, '');
+if (/href="ant-aphid-farming|href="ant-ranchers/.test(body)) {
+  throw new Error('a link to a sibling file survived into the single-file build');
+}
 
 /* The narration has to travel inside the file too, or the Narrate button on a
    shared copy would point at a track that isn't there. */
@@ -62,15 +71,41 @@ if (/<script|href="ants\.css"/.test(body)) {
   throw new Error('unexpected script or stylesheet reference left in the body');
 }
 
-const out = [
+const head = [
   `<title>${title}</title>`,
   ...fontLinks,
   '<style>',
   css.trim(),
-  '</style>',
+  '</style>'
+];
+
+const inner = [
+  ...head,
   body,
   ...scripts.map((s) => '<script>\n' + s.trim() + '\n</script>')
 ].join('\n');
+
+/* A standalone copy is opened straight off a disk, so it needs the document
+   scaffolding the artifact host would otherwise supply, and a body background
+   of its own. Everything it needs is already inline, so it works offline —
+   the webfonts are the one enhancement that needs a connection, and the page
+   falls back to Charter and the system sans without them. */
+const out = STANDALONE
+  ? [
+    '<!doctype html>',
+    '<html lang="en">',
+    '<head>',
+    '<meta charset="utf-8">',
+    '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">',
+    ...head,
+    '</head>',
+    '<body>',
+    body,
+    ...scripts.map((s) => '<script>\n' + s.trim() + '\n</script>'),
+    '</body>',
+    '</html>'
+  ].join('\n')
+  : inner;
 
 await mkdir(path.dirname(OUT), { recursive: true });
 await writeFile(OUT, out);
